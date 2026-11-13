@@ -28,4 +28,12 @@ interno.router.routes.extend(janelinha.rotas)
 interno.router.routes.append(Route("/saude", saude))
 interno.router.routes.append(WebSocketRoute("/interfone", interfone.porta_do_zelador))
 
-app = janelinha.PortaoASGI(interno)
+from starlette.middleware.cors import CORSMiddleware
+
+app = CORSMiddleware(
+    janelinha.PortaoASGI(interno),
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["WWW-Authenticate", "Mcp-Session-Id"],
+)
